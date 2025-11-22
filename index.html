@@ -1,13 +1,17 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#7C3AED">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>Community Wellbeing - Transforme seu corpo e mente</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -15,83 +19,209 @@
                         secondary: '#5B21B6',
                         accent: '#A855F7',
                         tertiary: '#C084FC',
-                        light: '#F3E8FF'
+                        light: '#F3E8FF',
+                        'dark-primary': '#6D28D9',
+                        'dark-secondary': '#4C1D95',
+                        'dark-accent': '#8B5CF6'
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            },
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translatey(0px)' },
+                            '50%': { transform: 'translatey(-20px)' },
+                        }
                     }
                 }
             }
         }
     </script>
 </head>
-<body class="font-sans text-gray-800">
+<body class="font-sans text-gray-800 dark:text-gray-200 dark:bg-gray-900 transition-colors duration-300">
     <!-- Navigation -->
-    <nav class="bg-white shadow-lg fixed w-full z-50">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <div class="flex items-center space-x-3">
-                    <img src="img/logo.jpeg" alt="Community Wellbeing Logo" class="h-12 w-12 object-cover rounded-full border-2 border-primary shadow-md">
-                    <span class="text-2xl font-bold text-gray-800">Community Wellbeing</span>
+    <nav class="bg-white dark:bg-gray-900 shadow-lg fixed w-full z-50 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-3 sm:px-4">
+            <div class="flex justify-between items-center py-3 sm:py-4">
+                <div class="flex items-center space-x-2 sm:space-x-3">
+                    <img src="img/logo.jpeg" alt="Community Wellbeing Logo" class="h-10 w-10 sm:h-12 sm:w-12 object-cover rounded-full border-2 border-primary shadow-md">
+                    <span class="text-lg sm:text-2xl font-bold text-gray-800 dark:text-white">Community Wellbeing</span>
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#inicio" class="text-gray-700 hover:text-primary transition duration-300">Início</a>
-                    <a href="#servicos" class="text-gray-700 hover:text-primary transition duration-300">Serviços</a>
-                    <a href="#sobre" class="text-gray-700 hover:text-primary transition duration-300">Sobre</a>
-                    <a href="#contato" class="text-gray-700 hover:text-primary transition duration-300">Contato</a>
+                    <a href="#inicio" class="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-accent transition duration-300">Início</a>
+                    <a href="#servicos" class="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-accent transition duration-300">Serviços</a>
+                    <a href="#sobre" class="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-accent transition duration-300">Sobre</a>
+                    <a href="#contato" class="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-accent transition duration-300">Contato</a>
+                    <button id="theme-toggle" class="ml-4 p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-300">
+                        <i id="theme-icon" class="fas fa-moon text-lg"></i>
+                    </button>
                 </div>
-                <div class="md:hidden">
-                    <button id="mobile-menu-btn" class="text-gray-700 hover:text-primary">
-                        <i class="fas fa-bars text-xl"></i>
+                <div class="md:hidden flex items-center space-x-1">
+                    <button id="theme-toggle-mobile" class="p-2.5 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-300 min-w-[44px] min-h-[44px] flex items-center justify-center">
+                        <i id="theme-icon-mobile" class="fas fa-moon text-base"></i>
+                    </button>
+                    <button id="mobile-menu-btn" class="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-accent p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center">
+                        <i class="fas fa-bars text-lg"></i>
                     </button>
                 </div>
             </div>
         </div>
         <!-- Mobile menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
-            <div class="px-4 py-2 space-y-2">
-                <a href="#inicio" class="block text-gray-700 hover:text-primary py-2">Início</a>
-                <a href="#servicos" class="block text-gray-700 hover:text-primary py-2">Serviços</a>
-                <a href="#sobre" class="block text-gray-700 hover:text-primary py-2">Sobre</a>
-                <a href="#contato" class="block text-gray-700 hover:text-primary py-2">Contato</a>
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+            <div class="px-3 py-3 space-y-1">
+                <a href="#inicio" class="block text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-accent hover:bg-gray-50 dark:hover:bg-gray-800 py-3 px-3 rounded-lg transition-all duration-300 text-base font-medium">Início</a>
+                <a href="#servicos" class="block text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-accent hover:bg-gray-50 dark:hover:bg-gray-800 py-3 px-3 rounded-lg transition-all duration-300 text-base font-medium">Serviços</a>
+                <a href="#sobre" class="block text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-accent hover:bg-gray-50 dark:hover:bg-gray-800 py-3 px-3 rounded-lg transition-all duration-300 text-base font-medium">Sobre</a>
+                <a href="#contato" class="block text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-accent hover:bg-gray-50 dark:hover:bg-gray-800 py-3 px-3 rounded-lg transition-all duration-300 text-base font-medium">Contato</a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section id="inicio" class="bg-gradient-to-br from-primary to-secondary text-white pt-20">
-        <div class="max-w-6xl mx-auto px-4 py-20">
+    <section id="inicio" class="hero-section bg-gradient-to-br from-primary to-secondary text-white pt-20 transition-colors duration-500 relative overflow-hidden">
+        <style>
+            .dark .hero-section {
+                background: linear-gradient(to bottom right, #111827, #581c87, #312e81) !important;
+            }
+            .dark .hero-title {
+                background: linear-gradient(to right, #e9d5ff, #c7d2fe) !important;
+                -webkit-background-clip: text !important;
+                background-clip: text !important;
+                color: transparent !important;
+            }
+            .dark .hero-subtitle {
+                color: #ddd6fe !important;
+            }
+            .dark .hero-description {
+                color: #d1d5db !important;
+                opacity: 0.8 !important;
+            }
+            .dark .hero-btn-primary {
+                background: #7c3aed !important;
+                color: white !important;
+                box-shadow: 0 0 20px rgba(124, 58, 237, 0.25) !important;
+            }
+            .dark .hero-btn-primary:hover {
+                background: #6d28d9 !important;
+            }
+            .dark .hero-btn-secondary {
+                border-color: #a855f7 !important;
+                color: #ddd6fe !important;
+            }
+            .dark .hero-btn-secondary:hover {
+                background: #7c3aed !important;
+                color: white !important;
+            }
+            .dark .hero-image-container {
+                background: rgba(139, 92, 246, 0.3) !important;
+                border: 1px solid rgba(168, 85, 247, 0.3) !important;
+                animation: float 6s ease-in-out infinite !important;
+            }
+            @keyframes float {
+                0%, 100% { transform: translatey(0px); }
+                50% { transform: translatey(-20px); }
+            }
+            
+            /* Mobile-specific improvements */
+            @media (max-width: 640px) {
+                .hero-section {
+                    min-height: auto;
+                    padding-top: 80px !important;
+                }
+                
+                /* Improve touch targets */
+                button, a {
+                    min-height: 44px;
+                    min-width: 44px;
+                }
+                
+                /* Better text spacing on mobile */
+                .hero-title {
+                    line-height: 1.2 !important;
+                }
+                
+                /* Optimize form inputs for mobile */
+                input, textarea, select {
+                    font-size: 16px !important; /* Prevents zoom on iOS */
+                }
+                
+                /* Better mobile scrolling */
+                html {
+                    -webkit-overflow-scrolling: touch;
+                }
+            }
+            
+            /* Tablet optimizations */
+            @media (min-width: 641px) and (max-width: 1023px) {
+                .hero-section {
+                    padding-top: 100px !important;
+                }
+            }
+        </style>
+        <!-- Dark theme background pattern -->
+        <div class="absolute inset-0 hidden dark:block opacity-10">
+            <div class="absolute top-10 left-10 w-20 h-20 bg-purple-400 rounded-full blur-xl animate-pulse"></div>
+            <div class="absolute top-32 right-20 w-16 h-16 bg-indigo-400 rounded-full blur-lg animate-pulse" style="animation-delay: 1s;"></div>
+            <div class="absolute bottom-20 left-32 w-12 h-12 bg-purple-300 rounded-full blur-md animate-pulse" style="animation-delay: 2s;"></div>
+            <div class="absolute bottom-40 right-40 w-14 h-14 bg-indigo-300 rounded-full blur-lg animate-pulse" style="animation-delay: 0.5s;"></div>
+        </div>
+        
+        <!-- Subtle grid pattern for dark theme -->
+        <div class="absolute inset-0 hidden dark:block opacity-5" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0); background-size: 40px 40px;"></div>
+        
+        <div class="max-w-6xl mx-auto px-3 sm:px-4 py-12 sm:py-16 lg:py-20 relative z-10">
             <div class="flex flex-col lg:flex-row items-center">
-                <div class="lg:w-1/2 text-center lg:text-left mb-10 lg:mb-0">
-                    <h1 class="text-4xl lg:text-6xl font-bold mb-6 leading-tight">
+                <div class="lg:w-1/2 text-center lg:text-left mb-8 lg:mb-0 px-2 sm:px-0">
+                    <h1 class="hero-title text-3xl sm:text-4xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
                         Transforme seu corpo e mente
                     </h1>
-                    <p class="text-xl lg:text-2xl mb-4 font-light">
+                    <p class="hero-subtitle text-lg sm:text-xl lg:text-2xl mb-3 sm:mb-4 font-light">
                         A força que reside em você
                     </p>
-                    <p class="text-lg mb-8 opacity-90">
+                    <p class="hero-description text-base sm:text-lg mb-6 sm:mb-8 opacity-90 leading-relaxed">
                         Adiar o processo de fitness e bem estar é adiar a melhor versão de si mesmo
                     </p>
-                    <div class="space-y-4 sm:space-y-0 sm:space-x-4 sm:flex">
-                        <a href="#contato" class="bg-white text-primary px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition duration-300 inline-block">
+                    <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
+                        <a href="#contato" class="hero-btn-primary bg-white text-primary px-6 sm:px-8 py-3 sm:py-3 rounded-full font-semibold hover:bg-gray-100 transition duration-300 inline-block shadow-lg text-center min-h-[48px] flex items-center justify-center">
                             Começar Agora
                         </a>
-                        <a href="#servicos" class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-primary transition duration-300 inline-block">
+                        <a href="#servicos" class="hero-btn-secondary border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-3 rounded-full font-semibold hover:bg-white hover:text-primary transition duration-300 inline-block text-center min-h-[48px] flex items-center justify-center">
                             Nossos Serviços
                         </a>
                     </div>
                 </div>
-                <div class="lg:w-1/2 flex justify-center">
+                <div class="lg:w-1/2 flex justify-center px-4 sm:px-0">
                     <div class="relative">
                         <!-- Main image container -->
-                        <div class="bg-white bg-opacity-10 p-4 rounded-3xl backdrop-blur-sm overflow-hidden">
+                        <div class="hero-image-container bg-white bg-opacity-10 p-3 sm:p-4 rounded-2xl sm:rounded-3xl backdrop-blur-sm overflow-hidden border border-white/20">
                             <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
                                  alt="Mulher treinando em casa" 
-                                 class="w-80 h-80 lg:w-96 lg:h-96 object-cover rounded-2xl shadow-2xl">
+                                 class="w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96 object-cover rounded-xl sm:rounded-2xl shadow-2xl transition-all duration-500">
                         </div>
                         <!-- Decorative elements -->
-                        <div class="absolute -top-4 -right-4 bg-accent w-20 h-20 rounded-full opacity-80 animate-pulse"></div>
-                        <div class="absolute -bottom-6 -left-6 bg-white bg-opacity-20 w-16 h-16 rounded-full"></div>
+                        <div class="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 bg-accent dark:bg-purple-500 w-12 h-12 sm:w-20 sm:h-20 rounded-full opacity-80 animate-pulse shadow-lg dark:shadow-purple-500/50"></div>
+                        <div class="absolute -bottom-3 -left-3 sm:-bottom-6 sm:-left-6 bg-white bg-opacity-20 dark:bg-indigo-400 dark:bg-opacity-30 w-10 h-10 sm:w-16 sm:h-16 rounded-full"></div>
                         <!-- Floating icon -->
-                        <div class="absolute top-4 left-4 bg-white bg-opacity-90 p-3 rounded-full shadow-lg">
-                            <i class="fas fa-dumbbell text-primary text-xl"></i>
+                        <div class="absolute top-2 left-2 sm:top-4 sm:left-4 bg-white bg-opacity-90 dark:bg-purple-600 dark:bg-opacity-90 p-2 sm:p-3 rounded-full shadow-lg dark:shadow-purple-500/25">
+                            <i class="fas fa-dumbbell text-primary dark:text-white text-base sm:text-xl"></i>
+                        </div>
+                        <!-- Additional dark theme decorative elements -->
+                        <div class="absolute -top-8 -left-8 hidden dark:block">
+                            <div class="w-32 h-32 bg-gradient-to-br from-purple-400/20 to-indigo-400/20 rounded-full blur-xl"></div>
+                        </div>
+                        <div class="absolute -bottom-8 -right-8 hidden dark:block">
+                            <div class="w-24 h-24 bg-gradient-to-br from-indigo-400/20 to-purple-400/20 rounded-full blur-lg"></div>
                         </div>
                     </div>
                 </div>
@@ -100,24 +230,24 @@
     </section>
 
     <!-- Services Section -->
-    <section id="servicos" class="py-20 bg-gray-50">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">Nossos Serviços</h2>
-                <p class="text-xl text-gray-600">Especializados em treino ao domicílio e apoio psicossocial</p>
+    <section id="servicos" class="py-12 sm:py-16 lg:py-20 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-3 sm:px-4">
+            <div class="text-center mb-10 sm:mb-12 lg:mb-16 px-2 sm:px-0">
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 dark:text-white mb-3 sm:mb-4">Nossos Serviços</h2>
+                <p class="text-lg sm:text-xl text-gray-600 dark:text-gray-300">Especializados em treino ao domicílio e apoio psicossocial</p>
             </div>
             
-            <div class="grid md:grid-cols-2 gap-8 mb-16">
+            <div class="grid md:grid-cols-2 gap-6 sm:gap-8 mb-12 sm:mb-16">
                 <!-- Treino ao Domicílio -->
-                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition duration-300">
-                    <div class="text-center mb-6">
-                        <div class="bg-primary bg-opacity-10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-home text-primary text-2xl"></i>
+                <div class="bg-white dark:bg-gray-700 p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-xl transition duration-300">
+                    <div class="text-center mb-4 sm:mb-6">
+                        <div class="bg-primary bg-opacity-10 dark:bg-primary dark:bg-opacity-20 w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                            <i class="fas fa-home text-primary text-xl sm:text-2xl"></i>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-800">Treino ao Domicílio</h3>
-                        <p class="text-gray-600 mt-2">Especialmente para mulheres e família inteira</p>
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">Treino ao Domicílio</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm sm:text-base">Especialmente para mulheres e família inteira</p>
                     </div>
-                    <ul class="space-y-3 text-gray-600">
+                    <ul class="space-y-3 text-gray-600 dark:text-gray-300">
                         <li class="flex items-center">
                             <i class="fas fa-check-circle text-primary mr-3"></i>
                             Emagrecer/ganhar massa muscular com segurança
@@ -134,15 +264,15 @@
                 </div>
 
                 <!-- Apoio Psicossocial -->
-                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition duration-300">
-                    <div class="text-center mb-6">
-                        <div class="bg-secondary bg-opacity-10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-brain text-secondary text-2xl"></i>
+                <div class="bg-white dark:bg-gray-700 p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-xl transition duration-300">
+                    <div class="text-center mb-4 sm:mb-6">
+                        <div class="bg-secondary bg-opacity-10 dark:bg-secondary dark:bg-opacity-20 w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                            <i class="fas fa-brain text-secondary text-xl sm:text-2xl"></i>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-800">Apoio Psicossocial</h3>
-                        <p class="text-gray-600 mt-2">Cuidado integral para sua mente</p>
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">Apoio Psicossocial</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm sm:text-base">Cuidado integral para sua mente</p>
                     </div>
-                    <ul class="space-y-3 text-gray-600">
+                    <ul class="space-y-3 text-gray-600 dark:text-gray-300">
                         <li class="flex items-center">
                             <i class="fas fa-check-circle text-secondary mr-3"></i>
                             Reduzir estresse e ansiedade
@@ -160,38 +290,38 @@
             </div>
 
             <!-- Benefits Grid -->
-            <div class="bg-white p-8 rounded-2xl shadow-lg">
-                <h3 class="text-2xl font-bold text-center text-gray-800 mb-8">Benefícios dos Nossos Serviços</h3>
-                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="bg-white dark:bg-gray-700 p-6 sm:p-8 rounded-2xl shadow-lg">
+                <h3 class="text-xl sm:text-2xl font-bold text-center text-gray-800 dark:text-white mb-6 sm:mb-8">Benefícios dos Nossos Serviços</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     <div class="text-center">
                         <i class="fas fa-weight-hanging text-primary text-3xl mb-3"></i>
-                        <h4 class="font-semibold mb-2">Emagrecer com Segurança</h4>
-                        <p class="text-gray-600 text-sm">Perda de peso eficaz e saudável</p>
+                        <h4 class="font-semibold mb-2 text-gray-800 dark:text-white">Emagrecer com Segurança</h4>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm">Perda de peso eficaz e saudável</p>
                     </div>
                     <div class="text-center">
                         <i class="fas fa-muscle text-primary text-3xl mb-3"></i>
-                        <h4 class="font-semibold mb-2">Ganhar Massa Muscular</h4>
-                        <p class="text-gray-600 text-sm">Fortalecimento muscular direcionado</p>
+                        <h4 class="font-semibold mb-2 text-gray-800 dark:text-white">Ganhar Massa Muscular</h4>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm">Fortalecimento muscular direcionado</p>
                     </div>
                     <div class="text-center">
                         <i class="fas fa-smile text-primary text-3xl mb-3"></i>
-                        <h4 class="font-semibold mb-2">Aumentar Autoestima</h4>
-                        <p class="text-gray-600 text-sm">Melhora da confiança pessoal</p>
+                        <h4 class="font-semibold mb-2 text-gray-800 dark:text-white">Aumentar Autoestima</h4>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm">Melhora da confiança pessoal</p>
                     </div>
                     <div class="text-center">
                         <i class="fas fa-zen text-primary text-3xl mb-3"></i>
-                        <h4 class="font-semibold mb-2">Reduzir Estresse</h4>
-                        <p class="text-gray-600 text-sm">Controle da ansiedade e estresse</p>
+                        <h4 class="font-semibold mb-2 text-gray-800 dark:text-white">Reduzir Estresse</h4>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm">Controle da ansiedade e estresse</p>
                     </div>
                     <div class="text-center">
                         <i class="fas fa-apple-alt text-primary text-3xl mb-3"></i>
-                        <h4 class="font-semibold mb-2">Hábitos Saudáveis</h4>
-                        <p class="text-gray-600 text-sm">Desenvolvimento de rotinas duradouras</p>
+                        <h4 class="font-semibold mb-2 text-gray-800 dark:text-white">Hábitos Saudáveis</h4>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm">Desenvolvimento de rotinas duradouras</p>
                     </div>
                     <div class="text-center">
                         <i class="fas fa-bolt text-primary text-3xl mb-3"></i>
-                        <h4 class="font-semibold mb-2">Mais Energia</h4>
-                        <p class="text-gray-600 text-sm">Disposição para o dia a dia</p>
+                        <h4 class="font-semibold mb-2 text-gray-800 dark:text-white">Mais Energia</h4>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm">Disposição para o dia a dia</p>
                     </div>
                 </div>
             </div>
@@ -199,12 +329,12 @@
     </section>
 
     <!-- About Section -->
-    <section id="sobre" class="py-20 bg-white">
-        <div class="max-w-6xl mx-auto px-4">
+    <section id="sobre" class="py-12 sm:py-16 lg:py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-3 sm:px-4">
             <div class="flex flex-col lg:flex-row items-center">
-                <div class="lg:w-1/2 mb-10 lg:mb-0 lg:pr-12">
-                    <h2 class="text-4xl font-bold text-gray-800 mb-6">Sobre a Community Wellbeing</h2>
-                    <p class="text-lg text-gray-600 mb-6">
+                <div class="lg:w-1/2 mb-8 lg:mb-0 lg:pr-12 px-2 sm:px-0">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 dark:text-white mb-4 sm:mb-6">Sobre a Community Wellbeing</h2>
+                    <p class="text-base sm:text-lg text-gray-600 dark:text-gray-300 mb-4 sm:mb-6 leading-relaxed">
                         Somos uma empresa focada em trazer boa saúde às pessoas, oferecendo serviços especializados 
                         para transformar sua vida através do fitness e bem-estar.
                     </p>
@@ -255,18 +385,18 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contato" class="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">Entre em Contato</h2>
-                <p class="text-xl text-gray-600">Pronto para transformar sua vida? Fale conosco!</p>
+    <section id="contato" class="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-3 sm:px-4">
+            <div class="text-center mb-10 sm:mb-12 lg:mb-16 px-2 sm:px-0">
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 dark:text-white mb-3 sm:mb-4">Entre em Contato</h2>
+                <p class="text-lg sm:text-xl text-gray-600 dark:text-gray-300">Pronto para transformar sua vida? Fale conosco!</p>
             </div>
             
-            <div class="grid lg:grid-cols-2 gap-12">
+            <div class="grid lg:grid-cols-2 gap-8 sm:gap-12">
                 <!-- Contact Info -->
-                <div class="space-y-8">
-                    <div class="bg-white p-6 rounded-2xl shadow-lg">
-                        <h3 class="text-2xl font-bold text-gray-800 mb-6">Informações de Contato</h3>
+                <div class="space-y-6 sm:space-y-8">
+                    <div class="bg-white dark:bg-gray-800 p-5 sm:p-6 rounded-2xl shadow-lg">
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white mb-4 sm:mb-6">Informações de Contato</h3>
                         
                         <div class="space-y-6">
                             <div class="flex items-center">
@@ -274,7 +404,7 @@
                                     <i class="fab fa-whatsapp text-green-600 text-xl"></i>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold text-gray-800">WhatsApp</h4>
+                                    <h4 class="font-semibold text-gray-800 dark:text-white">WhatsApp</h4>
                                     <a href="https://wa.me/258871153122" class="text-primary hover:text-secondary transition duration-300">
                                         +258 871 153 122
                                     </a>
@@ -286,7 +416,7 @@
                                     <i class="fas fa-phone text-blue-600 text-xl"></i>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold text-gray-800">Ligação</h4>
+                                    <h4 class="font-semibold text-gray-800 dark:text-white">Ligação</h4>
                                     <a href="tel:+258835311832" class="text-primary hover:text-secondary transition duration-300">
                                         +258 835 311 832
                                     </a>
@@ -298,8 +428,8 @@
                                     <i class="fas fa-map-marker-alt text-purple-600 text-xl"></i>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold text-gray-800">Localização</h4>
-                                    <p class="text-gray-600">Pemba, Moçambique</p>
+                                    <h4 class="font-semibold text-gray-800 dark:text-white">Localização</h4>
+                                    <p class="text-gray-600 dark:text-gray-300">Pemba, Moçambique</p>
                                 </div>
                             </div>
                             
@@ -308,8 +438,8 @@
                                     <i class="fas fa-clock text-orange-600 text-xl"></i>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold text-gray-800">Horário de Funcionamento</h4>
-                                    <p class="text-gray-600">5h às 18h</p>
+                                    <h4 class="font-semibold text-gray-800 dark:text-white">Horário de Funcionamento</h4>
+                                    <p class="text-gray-600 dark:text-gray-300">5h às 18h</p>
                                 </div>
                             </div>
                         </div>
@@ -326,20 +456,20 @@
                 </div>
                 
                 <!-- Quick Contact Form -->
-                <div class="bg-white p-8 rounded-2xl shadow-lg">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Envie uma Mensagem</h3>
-                    <form class="space-y-6">
+                <div class="bg-white dark:bg-gray-800 p-5 sm:p-8 rounded-2xl shadow-lg">
+                    <h3 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white mb-4 sm:mb-6">Envie uma Mensagem</h3>
+                    <form class="space-y-4 sm:space-y-6">
                         <div>
-                            <label class="block text-gray-700 font-semibold mb-2">Nome</label>
-                            <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Seu nome completo">
+                            <label class="block text-gray-700 dark:text-gray-300 font-semibold mb-2">Nome</label>
+                            <input type="text" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Seu nome completo">
                         </div>
                         <div>
-                            <label class="block text-gray-700 font-semibold mb-2">Telefone</label>
-                            <input type="tel" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Seu número de telefone">
+                            <label class="block text-gray-700 dark:text-gray-300 font-semibold mb-2">Telefone</label>
+                            <input type="tel" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Seu número de telefone">
                         </div>
                         <div>
-                            <label class="block text-gray-700 font-semibold mb-2">Serviço de Interesse</label>
-                            <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <label class="block text-gray-700 dark:text-gray-300 font-semibold mb-2">Serviço de Interesse</label>
+                            <select class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
                                 <option>Selecione um serviço</option>
                                 <option>Treino ao Domicílio</option>
                                 <option>Apoio Psicossocial</option>
@@ -347,10 +477,10 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-gray-700 font-semibold mb-2">Mensagem</label>
-                            <textarea rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Conte-nos mais sobre seus objetivos..."></textarea>
+                            <label class="block text-gray-700 dark:text-gray-300 font-semibold mb-2">Mensagem</label>
+                            <textarea rows="4" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Conte-nos mais sobre seus objetivos..."></textarea>
                         </div>
-                        <button type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-secondary transition duration-300">
+                        <button type="submit" class="w-full bg-primary hover:bg-secondary text-white py-3 rounded-lg font-semibold transition duration-300">
                             Enviar Mensagem
                         </button>
                     </form>
@@ -360,9 +490,9 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-12">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="grid md:grid-cols-3 gap-8">
+    <footer class="bg-gray-800 dark:bg-gray-900 text-white py-8 sm:py-12 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-3 sm:px-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
                 <div>
                     <div class="flex items-center space-x-3 mb-4">
                         <img src="img/logo.jpeg" alt="Community Wellbeing Logo" class="h-10 w-10 object-cover rounded-full border-2 border-primary shadow-md">
@@ -411,33 +541,143 @@
         </div>
     </footer>
 
-    <!-- Mobile menu toggle script -->
+    <!-- Scripts -->
     <script>
-        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenu.classList.toggle('hidden');
-        });
+        // Theme toggle functionality - execute immediately
+        (function() {
+            console.log('Theme script loaded');
+            
+            // Force a test of dark theme (temporary)
+            document.documentElement.classList.add('dark');
+            console.log('Dark theme force-applied for testing');
+            
+            function initTheme() {
+                const themeToggle = document.getElementById('theme-toggle');
+                const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+                const themeIcon = document.getElementById('theme-icon');
+                const themeIconMobile = document.getElementById('theme-icon-mobile');
+                const html = document.documentElement;
 
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                console.log('Elements found:', {
+                    themeToggle: !!themeToggle,
+                    themeToggleMobile: !!themeToggleMobile,
+                    themeIcon: !!themeIcon,
+                    themeIconMobile: !!themeIconMobile
+                });
+
+                // Check for saved theme preference or default to light mode
+                const currentTheme = localStorage.getItem('theme') || 'light';
+                console.log('Current theme:', currentTheme);
+                
+                // Initialize theme
+                if (currentTheme === 'dark') {
+                    html.classList.add('dark');
+                    if (themeIcon) {
+                        themeIcon.classList.remove('fa-moon');
+                        themeIcon.classList.add('fa-sun');
+                    }
+                    if (themeIconMobile) {
+                        themeIconMobile.classList.remove('fa-moon');
+                        themeIconMobile.classList.add('fa-sun');
+                    }
                 }
-                // Close mobile menu if open
-                document.getElementById('mobile-menu').classList.add('hidden');
-            });
-        });
 
-        // Form submission (you can integrate with a backend service)
-        document.querySelector('form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Obrigado pela sua mensagem! Entraremos em contato em breve.');
+                function toggleTheme() {
+                    console.log('Toggle theme clicked');
+                    if (html.classList.contains('dark')) {
+                        // Switch to light mode
+                        html.classList.remove('dark');
+                        localStorage.setItem('theme', 'light');
+                        console.log('Switched to light mode');
+                        if (themeIcon) {
+                            themeIcon.classList.remove('fa-sun');
+                            themeIcon.classList.add('fa-moon');
+                        }
+                        if (themeIconMobile) {
+                            themeIconMobile.classList.remove('fa-sun');
+                            themeIconMobile.classList.add('fa-moon');
+                        }
+                    } else {
+                        // Switch to dark mode
+                        html.classList.add('dark');
+                        localStorage.setItem('theme', 'dark');
+                        console.log('Switched to dark mode');
+                        if (themeIcon) {
+                            themeIcon.classList.remove('fa-moon');
+                            themeIcon.classList.add('fa-sun');
+                        }
+                        if (themeIconMobile) {
+                            themeIconMobile.classList.remove('fa-moon');
+                            themeIconMobile.classList.add('fa-sun');
+                        }
+                    }
+                }
+
+                // Add event listeners only if elements exist
+                if (themeToggle) {
+                    themeToggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        toggleTheme();
+                    });
+                    console.log('Desktop theme toggle listener added');
+                }
+                if (themeToggleMobile) {
+                    themeToggleMobile.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        toggleTheme();
+                    });
+                    console.log('Mobile theme toggle listener added');
+                }
+
+                return { toggleTheme, themeToggle, themeToggleMobile };
+            }
+
+            // Try to initialize immediately
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initTheme);
+            } else {
+                initTheme();
+            }
+        })();
+
+        // Initialize other functionality when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                    // Close mobile menu if open
+                    if (mobileMenu) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+
+            // Form submission (you can integrate with a backend service)
+            const contactForm = document.querySelector('form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Obrigado pela sua mensagem! Entraremos em contato em breve.');
+                });
+            }
         });
     </script>
 </body>
